@@ -24,4 +24,32 @@ class BankAccountTest {
         // Assert
         assertEquals(150_000, acc.getBalance(), 0.001);
     }
+
+    @Test
+    void deposit_jumlahTidakValid_melemparIllegalArgument() {
+        BankAccount acc = new BankAccount("001", "Andi", 100_000);
+        IllegalArgumentException ex = assertThrows(
+            IllegalArgumentException.class, () -> acc.deposit(-10));
+        assertEquals("Jumlah setoran harus lebih dari 0", ex.getMessage());
+    }
+
+    @Test
+    void withdraw_melebihiSaldo_melemparInsufficientBalance() {
+        BankAccount acc = new BankAccount("001", "Andi", 100_000);
+        assertThrows(InsufficientBalanceException.class, () -> acc.withdraw(200_000));
+        assertEquals(100_000, acc.getBalance(), 0.001); // memastikan saldo tidak berkurang
+    }
+
+    @Test
+    void withdraw_jumlahValid_tidakMelempar() {
+        BankAccount acc = new BankAccount("001", "Andi", 100_000);
+        assertDoesNotThrow(() -> acc.withdraw(30_000));
+        assertEquals(70_000, acc.getBalance(), 0.001);
+    }
+
+    @Test
+    void constructor_saldoAwalNegatif_ditolak() {
+        assertThrows(IllegalArgumentException.class,
+            () -> new BankAccount("001", "Andi", -1));
+    }
 }
