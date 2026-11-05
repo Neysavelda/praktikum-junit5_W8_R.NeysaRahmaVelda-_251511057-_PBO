@@ -4,6 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,6 +51,27 @@ class BankAccountTest {
             IllegalArgumentException ex = assertThrows(
                 IllegalArgumentException.class, () -> acc.deposit(-10));
             assertEquals("Jumlah setoran harus lebih dari 0", ex.getMessage());
+        }
+
+        // PERCOBAAN 4: PARAMETERIZED TEST DENGAN @ValueSource
+        @ParameterizedTest
+        @ValueSource(doubles = {-100, -1, 0})
+        @DisplayName("Deposit jumlah tidak valid harus melempar IllegalArgumentException")
+        void deposit_jumlahTidakValid_melemparException(double amount) {
+            assertThrows(IllegalArgumentException.class, () -> acc.deposit(amount));
+        }
+
+        // PERCOBAAN 4: PARAMETERIZED TEST DENGAN @CsvSource
+        @ParameterizedTest
+        @CsvSource({
+            "10000.0, 110000.0",
+            "50000.0, 150000.0",
+            "100000.0, 200000.0"
+        })
+        @DisplayName("Deposit berbagai nominal valid harus meng-update saldo")
+        void deposit_berbagaiNominal_menambahSaldo(double amount, double expectedBalance) {
+            acc.deposit(amount);
+            assertEquals(expectedBalance, acc.getBalance(), 0.001);
         }
     }
 
