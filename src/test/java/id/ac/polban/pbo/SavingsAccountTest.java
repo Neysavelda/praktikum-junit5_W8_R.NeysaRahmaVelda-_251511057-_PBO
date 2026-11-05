@@ -28,4 +28,13 @@ class SavingsAccountTest {
         );
         assertEquals("Suku bunga tidak boleh negatif", ex.getMessage());
     }
+
+    // LATIHAN 5: INTERFACE TAXABLE
+    @Test
+    @DisplayName("L5: SavingsAccount menghitung pajak 20% dari bunga dengan benar")
+    void calculateTax_menghitungPajakBungaSesuai() {
+        Taxable taxable = new SavingsAccount("SA-03", "Dedi", 1_000_000, 0.10);
+        // Bunga = 1.000.000 * 0.10 = 100.000 -> Pajak (20%) = 20.000
+        assertEquals(20_000, taxable.calculateTax(), 0.001);
+    }
 }
