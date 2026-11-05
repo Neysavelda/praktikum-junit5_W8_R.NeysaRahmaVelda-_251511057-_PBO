@@ -105,4 +105,14 @@ class BankAccountTest {
         assertEquals("Rekening tujuan tidak boleh null", ex.getMessage());
         assertEquals(100_000, acc.getBalance(), 0.001);
     }
+
+    // LATIHAN 2: TRANSFER KE REKENING SENDIRI
+    @Test
+    @DisplayName("L2: Transfer ke rekening sendiri harus melempar IllegalArgumentException")
+    void transfer_keRekeningSendiri_melemparIllegalArgumentException() {
+        IllegalArgumentException ex = assertThrows(
+            IllegalArgumentException.class, () -> acc.transfer(acc, 50_000));
+        assertEquals("Tidak dapat transfer ke rekening sendiri", ex.getMessage());
+        assertEquals(100_000, acc.getBalance(), 0.001);
+    }
 }
