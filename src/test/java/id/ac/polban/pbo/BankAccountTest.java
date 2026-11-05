@@ -1,5 +1,8 @@
 package id.ac.polban.pbo;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,10 +18,29 @@ class BankAccountTest {
 
     private BankAccount acc;
 
-    // PERCOBAAN 3: SETUP LIFECYCLE (@BeforeEach)
+    // PERCOBAAN 3: LIFECYCLE @BeforeAll
+    @BeforeAll
+    static void initAll() {
+        System.out.println("@BeforeAll  : sekali di awal");
+    }
+
+    // PERCOBAAN 3: LIFECYCLE @BeforeEach
     @BeforeEach
     void setUp() {
+        System.out.println("@BeforeEach : objek baru dibuat");
         acc = new BankAccount("001", "Andi", 100_000);
+    }
+
+    // PERCOBAAN 3: LIFECYCLE @AfterEach
+    @AfterEach
+    void tearDown() {
+        System.out.println("@AfterEach  : test selesai");
+    }
+
+    // PERCOBAAN 3: LIFECYCLE @AfterAll
+    @AfterAll
+    static void tearDownAll() {
+        System.out.println("@AfterAll   : sekali di akhir");
     }
 
     // PERCOBAAN 1: ASSERTION DASAR & CONSTRUCTOR
@@ -61,9 +83,10 @@ class BankAccountTest {
             assertThrows(IllegalArgumentException.class, () -> acc.deposit(amount));
         }
 
-        // PERCOBAAN 4: PARAMETERIZED TEST DENGAN @CsvSource
+        // PERCOBAAN 4: PARAMETERIZED TEST DENGAN @CsvSource (TERMASUK BOUNDARY VALUE 0.01)
         @ParameterizedTest
         @CsvSource({
+            "0.01, 100000.01",
             "10000.0, 110000.0",
             "50000.0, 150000.0",
             "100000.0, 200000.0"
